@@ -9,20 +9,20 @@ To try the playground out for yourself, run the following commands:
 ```zsh
   git clone https://github.com/YutaSugimura/react-native-camera-app.git
   cd react-native-camera-app
-  npm i
+  yarn install
   npx pod-install ios
 ```
 
 ### iOS
 
 ```zsh
-  npm run ios
+  yarn ios
 ```
 
 ### Android
 
 ```zsh
-  npm run android
+  yarn android
 ```
 
 ### License
