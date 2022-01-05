@@ -11,10 +11,12 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {SafeAreaView, StyleSheet, Text} from 'react-native';
 import {Camera, useCameraDevices} from 'react-native-vision-camera';
+import {useScanBarcodes, BarcodeFormat} from 'vision-camera-code-scanner';
 
 const App: React.VFC = () => {
   const devices = useCameraDevices();
   const device = devices.back;
+  const [frameProcessor, barcodes] = useScanBarcodes([BarcodeFormat.QR_CODE]);
 
   const cameraRef = useRef<Camera>(null);
 
@@ -47,13 +49,22 @@ const App: React.VFC = () => {
   }
 
   return (
-    <Camera
-      style={styles.container}
-      ref={cameraRef}
-      device={device}
-      isActive={authorized}
-      photo={true}
-    />
+    <>
+      <Camera
+        style={[StyleSheet.absoluteFill, styles.container]}
+        ref={cameraRef}
+        device={device}
+        isActive={authorized}
+        photo={true}
+        frameProcessor={frameProcessor}
+        frameProcessorFps={5}
+      />
+      {barcodes.map((barcode, idx) => (
+        <Text key={idx} style={styles.barcodeTextURL}>
+          {barcode.displayValue}
+        </Text>
+      ))}
+    </>
   );
 };
 
@@ -62,5 +73,10 @@ export default App;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  barcodeTextURL: {
+    fontSize: 20,
+    color: 'white',
+    fontWeight: 'bold',
   },
 });
